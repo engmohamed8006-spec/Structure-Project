@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Structure Tool </title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#e9f1f8;--grid:#c3d6e8;--panel:#fff;--ink:#12324f;--mute:#56718b;--hat:#f2a900;--steel:#1f6fb2;--rebar:#d9480f;--ok:#2b9348;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1b18;--grid:#2a2723;--panel:#282521;--ink:#f1e9dc;--mute:#b5aa99;--hat:#f2b84b;--steel:#86bde8;--rebar:#ef8a62;--ok:#94d198;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1d1b18;--grid:#2a2723;--panel:#282521;--ink:#f1e9dc;--mute:#b5aa99;--hat:#f2b84b;--steel:#86bde8;--rebar:#ef8a62;--ok:#94d198;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;font-family:Cairo,system-ui,sans-serif;background:var(--bg);color:var(--ink);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px}
+.wrap{max-width:1000px;margin:0 auto;padding:16px}
+header{display:flex;align-items:center;gap:12px;border-bottom:6px solid var(--hat);padding-bottom:10px;margin-bottom:16px}
+header h1{font-size:clamp(22px,4vw,32px);margin:0;font-weight:900;flex:1}
+button,a.btn{font-family:inherit;cursor:pointer;background:var(--panel);color:var(--ink);border:2px solid var(--ink);border-radius:8px;padding:4px 12px;text-decoration:none;font-weight:700}
+.card{background:var(--panel);border:2px solid var(--ink);border-radius:10px;padding:14px;margin-bottom:14px}
+.choice{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:640px){.choice{grid-template-columns:1fr}}
+.choice a{display:block;text-align:center;font-size:20px;padding:28px 10px;background:var(--hat);color:#12324f;border-radius:12px;border:3px solid #12324f;text-decoration:none;font-weight:900}
+.choice small{display:block;font-weight:400;font-size:14px;margin-top:6px}
+.row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.row label{flex:0 0 90px;font-weight:700}
+input{width:100%;font:700 16px Cairo,monospace;direction:ltr;text-align:center;padding:7px;border:2px solid var(--ink);border-radius:6px;background:var(--bg);color:var(--ink)}
+.sign{font-size:13px;color:var(--mute);line-height:1.7}
+table{width:100%;border-collapse:collapse;font-size:15px}
+td,th{border:1px solid var(--mute);padding:6px 8px;text-align:center;direction:ltr}
+th{background:var(--hat);color:#12324f}
+td.r{font-weight:900;color:var(--rebar)}
+svg{width:100%;height:auto;display:block;background:var(--panel);border:2px solid var(--ink);border-radius:10px}
+.err{color:var(--rebar);font-weight:700}
+footer{text-align:center;color:var(--mute);font-size:14px;margin:20px 0 8px}
+.hide{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><svg viewBox="0 0 48 48" aria-hidden="true" style="flex:none;width:44px;height:44px;border:0;background:none;border-radius:0"><rect width="48" height="48" rx="13" fill="var(--hat)"/><circle cx="24" cy="24" r="13" fill="none" stroke="#12324f" stroke-width="3" stroke-dasharray="5 3"/><line x1="12" y1="31" x2="36" y2="17" stroke="#12324f" stroke-width="3" stroke-linecap="round"/><circle cx="12" cy="31" r="3" fill="#12324f"/><circle cx="36" cy="17" r="3" fill="#12324f"/><circle cx="24" cy="24" r="2.5" fill="#12324f"/></svg><h1>أدوات التحليل الإنشائي</h1>
+<a class="btn" id="back" href="#home">🏠 الرئيسية</a><button id="theme" aria-label="الثيم">🌓</button></header>
+
+<!-- الصفحة 1: الاختيار -->
+<section id="home"><div class="card"><h2 style="margin:0">اختار المحاضرة 📚</h2><p class="sign">Structural Analysis 2</p></div>
+<div class="choice"><a href="#l3">🌀 Lecture 3<small>القص الناتج عن العزم الملتوي (Torsion)</small></a><a href="#l6">⭕ Lecture 6<small>الإجهادات المركبة ودائرة مور</small></a></div></section>
+<section id="l6" class="hide">
+<div class="card"><h2 style="margin:0">تحب تشتغل بإيه؟ 🤔</h2><p class="sign">اختار طريقة الحل (الإجهادات الرئيسية والقص الأقصى من محاضرة Lecture 6)</p></div>
+<div class="choice">
+<a href="#formulas">📐 بالقوانين<small>خطوات الحل بالأرقام</small></a>
+<a href="#circle">⭕ بدائرة مور<small>رسم الدائرة تفاعلياً</small></a>
+</div>
+</section>
+
+<div id="inputs" class="card hide">
+<h2 style="margin:0 0 10px">🧱 بيانات العنصر</h2>
+<div class="row"><label>σx</label><input id="sx" type="number" step="any" value="1"></div>
+<div class="row"><label>σy</label><input id="sy" type="number" step="any" value="-0.5"></div>
+<div class="row"><label>τ</label><input id="t" type="number" step="any" value="0.8"></div>
+<div class="row"><label>θ (اختياري)</label><input id="th" type="number" step="any" placeholder="درجات"></div>
+<div class="row"><label>الوحدة</label><input id="u" type="text" value="t/cm²"></div>
+<div class="sign">⚠️ الشد (+) والضغط (−). τ بعلامة القص على الوجه الرأسي، موجب لو بيلف العنصر عكس عقارب الساعة. θ موجب عكس عقارب الساعة.</div>
+</div>
+
+<!-- الصفحة 2: الحل بالقوانين -->
+<section id="formulas" class="hide"><div class="card" style="overflow-x:auto"><h2 style="margin:0 0 10px">📐 الحل بالقوانين</h2><table id="tb"></table></div></section>
+
+<!-- الصفحة 3: دائرة مور -->
+<section id="circle" class="hide"><svg id="svg" viewBox="0 0 640 520" role="img" aria-label="Mohr’s circle"></svg></section>
+
+<section id="l3" class="hide"><div class="card"><h2 style="margin:0 0 10px">🌀 Lecture 3 – Torsion</h2>
+<div class="row"><label style="flex:0 0 150px">نوع القطاع</label><select id="l3type" style="width:100%;font:700 16px Cairo,system-ui;padding:7px;border:2px solid var(--ink);border-radius:6px;background:var(--bg);color:var(--ink)"><option value="rect">مستطيل مصمت (k1, k2)</option><option value="opn">قطاع مفتوح (مجموع مستطيلات رفيعة)</option><option value="cls">قطاع مغلق رفيع الجدار </option></select></div>
+<div id="l3f"></div><div class="sign">T بـ N·m، الأبعاد mm، G بـ GPa، والنتائج بـ MPa. b دايماً الضلع الأقصر. لو عايز k1 و k2 زي جدول الدكتور بالظبط اكتبهم في الخانات الاختيارية.</div></div>
+<div class="card" style="overflow-x:auto"><table id="l3tb"></table></div></section>
+<footer>Devloped By  Eng. Mohamed Mahmoud</footer>
+</div>
+
+<script>
+const $=id=>document.getElementById(id),D=Math.PI/180;
+const f=n=>{let s=(+n.toFixed(3)).toString();return s==="-0"?"0":s};
+const norm=a=>{while(a>45)a-=90;while(a<=-45)a+=90;return a};
+
+function calc(){
+ const sx=+$('sx').value,sy=+$('sy').value,t=+$('t').value,thv=$('th').value;
+ const c=(sx+sy)/2,h=(sx-sy)/2,R=Math.hypot(h,t);
+ const o={sx,sy,t,c,h,R,smax:c+R,smin:c-R,u:$('u').value,hasTh:thv!==''};
+ o.thp=norm(.5*Math.atan2(2*t,sx-sy)/D);
+ o.ths=norm(.5*Math.atan2(sx-sy,-2*t)/D);
+ o.S=a=>c+h*Math.cos(2*a*D)+t*Math.sin(2*a*D);
+ o.T=a=>-h*Math.sin(2*a*D)+t*Math.cos(2*a*D);
+ if(o.hasTh)o.th=+thv;
+ return o;
+}
+
+
+function formulas(o){
+ const {sx,sy,t,c,h,R,u}=o;
+ if(R<1e-9){$('tb').innerHTML='<tr><td class="err">حالة هيدروستاتيك: R = 0</td></tr>';return}
+ const rows=[
+  ['σavg = (σx+σy)/2',`(${f(sx)}+${f(sy)})/2`,f(c)],
+  ['R = √[((σx−σy)/2)² + τ²]',`√(${f(h)}² + ${f(t)}²)`,f(R)],
+  ['σmax = σavg + R',`${f(c)} + ${f(R)}`,f(o.smax)],
+  ['σmin = σavg − R',`${f(c)} − ${f(R)}`,f(o.smin)],
+  ['tan2θp = 2τ/(σx−σy)',`2(${f(t)})/(${f(sx-sy)})`,'θp = '+f(o.thp)+'°'],
+  ['σ على مستوى θp',`${f(c)}+${f(h)}cos2θp+${f(t)}sin2θp`,f(o.S(o.thp))+(Math.abs(o.S(o.thp)-o.smax)<1e-6?' (= σmax)':' (= σmin)')],
+  ['τmax = ±R','σ على المستوى = σavg','±'+f(R)],
+  ['tan2θs = (σx−σy)/(−2τ)',`(${f(sx-sy)})/(${f(-2*t)})`,'θs = '+f(o.ths)+'°'],
+  ['تحقق |θp|+|θs| = 45°',`${f(Math.abs(o.thp))}+${f(Math.abs(o.ths))}`,f(Math.abs(o.thp)+Math.abs(o.ths))+'°']
+ ];
+ if(o.hasTh){const a=o.th,s=o.S(a),tt=o.T(a),s2=sx+sy-s;
+  rows.push(['σθ = σavg+((σx−σy)/2)cos2θ+τ sin2θ',`θ = ${f(a)}°`,f(s)],
+   ['τθ = −((σx−σy)/2)sin2θ+τ cos2θ',`θ = ${f(a)}°`,f(tt)],
+   ['σθ+90 = (σx+σy) − σθ',`${f(sx+sy)} − ${f(s)}`,f(s2)]);}
+ $('tb').innerHTML='<tr><th>القانون</th><th>التعويض</th><th>الناتج ('+u+')</th></tr>'+rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td class="r">${r[2]}</td></tr>`).join('');
+}
+
+function circle(o){
+ const {sx,sy,t,c,R,smax,smin,thp,ths}=o,svg=$('svg');
+ if(R<1e-9){svg.innerHTML='<text x="320" y="260" text-anchor="middle" fill="#d9480f" font-size="20">R = 0 (نقطة بس)</text>';return}
+ const W=640,H=520,lo=Math.min(0,smin)-.25*R,hi=Math.max(0,smax)+.25*R;
+ const s=Math.min((W-60)/(hi-lo),(H-90)/(2.5*R)),ox=(W-(hi-lo)*s)/2-lo*s,oy=H/2,cx=ox+c*s;
+ const P=(a,b)=>[ox+a*s,oy-b*s],aX=Math.atan2(-t,sx-c);
+ const pt=(a,r)=>[cx+r*Math.cos(a),oy-r*Math.sin(a)];
+ const arc=(a0,a1,r,col,lab)=>{const [x0,y0]=pt(a0,r),[x1,y1]=pt(a1,r),[lx,ly]=pt((a0+a1)/2,r+16);
+  return `<path d="M${x0} ${y0} A${r} ${r} 0 0 ${a1>a0?0:1} ${x1} ${y1}" fill="none" stroke="${col}" stroke-width="3.5" marker-end="url(#ar)"/><text x="${lx}" y="${ly}" fill="${col}" font-weight="700" font-size="15" text-anchor="middle">${lab}</text>`};
+ const dot=(p,col)=>`<circle cx="${p[0]}" cy="${p[1]}" r="6" fill="${col}" stroke="var(--ink)" stroke-width="2"/>`;
+ const tx=(p,txt,col,dx=0,dy=-10)=>`<text x="${p[0]+dx}" y="${p[1]+dy}" fill="${col}" font-size="14" font-weight="700" text-anchor="middle">${txt}</text>`;
+ const X=P(sx,-t),Y=P(sy,t),A=P(smax,0),B=P(smin,0),T=P(c,R),M=P(c,-R),C=P(c,0);
+ const rp=Math.min(.45*R*s,70),rs=Math.min(.7*R*s,105);
+ let g=`<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker></defs>
+ <line x1="10" y1="${oy}" x2="${W-14}" y2="${oy}" stroke="var(--ink)" stroke-width="2.5" marker-end="url(#ar)"/>
+ <line x1="${ox}" y1="${H-8}" x2="${ox}" y2="14" stroke="var(--ink)" stroke-width="2.5" marker-end="url(#ar)"/>
+ <text x="${W-22}" y="${oy-8}" fill="var(--ink)" font-weight="700">σ</text><text x="${ox+14}" y="24" fill="var(--ink)" font-weight="700">τ</text>
+ <circle cx="${cx}" cy="${oy}" r="${R*s}" fill="var(--hat)" fill-opacity=".18" stroke="var(--steel)" stroke-width="3.5" stroke-dasharray="9 5"/>
+ <line x1="${X[0]}" y1="${X[1]}" x2="${Y[0]}" y2="${Y[1]}" stroke="var(--ink)" stroke-width="3"/>
+ ${arc(aX,aX+2*thp*D,rp,'var(--rebar)','2θp')}${arc(aX,aX+2*ths*D,rs,'var(--ok)','2θs')}
+ ${dot(X,'var(--rebar)')}${dot(Y,'var(--steel)')}${dot(C,'var(--hat)')}${dot(A,'var(--rebar)')}${dot(B,'var(--rebar)')}${dot(T,'var(--ok)')}${dot(M,'var(--ok)')}
+ ${tx(X,`X (${f(sx)}, ${f(-t)})`,'var(--ink)',0,22)}${tx(Y,`Y (${f(sy)}, ${f(t)})`,'var(--ink)',0,-12)}
+ ${tx(A,'σmax '+f(smax),'var(--rebar)',0,-14)}${tx(B,'σmin '+f(smin),'var(--rebar)',0,24)}
+ ${tx(T,'τmax '+f(R),'var(--ok)',50,-9)}${tx(M,'−τmax','var(--ok)',40,20)}${tx(C,'C = '+f(c),'var(--hat)',0,36)}`;
+ if(o.hasTh){const a2=2*o.th*D,st=o.S(o.th),tt=o.T(o.th),Q=P(st,-tt),Rr=P(o.sx+o.sy-st,tt);
+  g+=`<line x1="${Q[0]}" y1="${Q[1]}" x2="${Rr[0]}" y2="${Rr[1]}" stroke="#a15cff" stroke-width="3" stroke-dasharray="3 5"/>${arc(aX,aX+a2,rp*.7+18,'#a15cff','2θ')}${dot(Q,'#a15cff')}${dot(Rr,'#a15cff')}${tx(Q,`σθ ${f(st)}`,'#a15cff',0,22)}`;}
+ svg.innerHTML=g;
+}
+
+function route(){
+ const h=location.hash.slice(1),p=['l6','l3','formulas','circle'].includes(h)?h:'home',m=p==='formulas'||p==='circle';
+ ['home','l6','l3','formulas','circle'].forEach(i=>$(i).classList.toggle('hide',i!==p));
+ $('inputs').classList.toggle('hide',!m);$('back').classList.toggle('hide',p==='home');$('back').href=m?'#l6':'#home';
+ if(m){const o=calc();p==='formulas'?formulas(o):circle(o)}
+ if(p==='l3')$('l3f').innerHTML?l3():l3fields();
+}
+['sx','sy','t','th','u'].forEach(i=>$(i).addEventListener('input',route));
+// ===== Lecture 3: Torsion =====
+const g=n=>String(+(+n).toPrecision(4)),DG=180/Math.PI;
+const TB=[[1,.208,.141],[1.5,.231,.196],[1.75,.239,.214],[2,.246,.229],[2.5,.258,.249],[3,.267,.263],[4,.282,.281],[6,.299,.299],[8,.307,.307],[10,.313,.313]];
+function ks(r){if(r>10)return[1/3,1/3];r=Math.max(r,1);for(let i=1;i<TB.length;i++){const a=TB[i-1],b=TB[i];if(r<=b[0]){const w=(r-a[0])/(b[0]-a[0]);return[a[1]+w*(b[1]-a[1]),a[2]+w*(b[2]-a[2])]}}}
+function rect(v){const {d,b,G}=v,r=d/b,K=ks(r),k1=v.k1??K[0],k2=v.k2??K[1];
+ const R=[['d/b',`${g(d)}/${g(b)}`,g(r)],['k1 , k2',r>10?'d/b > 10 ← 1/3':'من الجدول (استكمال خطي)',g(k1)+' , '+g(k2)]];
+ if(v.T!=null){const Tm=v.T*1e3,E=G*1e3,tau=Tm/(k1*d*b*b),th=Tm/(k2*d*b**3*E)*1e3,tA=Tm*(3+1.8*b/d)/(d*b*b),J=b*d*(b*b+d*d)/12,thA=42*Tm*J/(E*(b*d)**4)*1e3;
+  R.push(['τmax = T/(k1 d b²)',`${g(Tm)}/(${g(k1)}×${g(d)}×${g(b)}²)`,g(tau)+' MPa'],
+  ['θ/L = T/(k2 d b³ G)',`${g(Tm)}/(${g(k2)}×${g(d)}×${g(b)}³×${g(E)})`,g(th)+' rad/m = '+g(th*DG)+'°/m'],
+  ['τ تقريبي = T(3+1.8b/d)/(d b²)',`${g(Tm)}×${g(3+1.8*b/d)}/(${g(d)}×${g(b)}²)`,g(tA)+' MPa (خطأ '+g((tA-tau)/tau*100)+'%)'],
+  ['θ/L تقريبي = 42 T J/(G A⁴)',`J=${g(J)} , A=${g(b*d)}`,g(thA*DG)+'°/m (خطأ '+g((thA-th)/th*100)+'%)'])}
+ if(v.ta!=null)R.push(['T مسموح = k1 d b² τ',`${g(k1)}×${g(d)}×${g(b)}²×${g(v.ta)}`,g(k1*d*b*b*v.ta/1e3)+' N·m']);
+ return R}
+function opn(v){const L=[1,2,3].map(i=>[v['s'+i],v['t'+i]]).filter(x=>x[0]&&x[1]);if(!L.length||v.T==null||!v.G)return[['خطأ','','NaN']];
+ const Tm=v.T*1e3,E=v.G*1e3,J=L.reduce((a,x)=>a+x[0]*x[1]**3,0)/3;
+ const R=[['J = (1/3) Σ s t³',L.map(x=>`${g(x[0])}×${g(x[1])}³`).join(' + ')+' ثم ÷3',g(J)+' mm⁴']];
+ L.forEach((x,i)=>R.push([`τ${i+1} = T t/J`,`${g(Tm)}×${g(x[1])}/${g(J)}`,g(Tm*x[1]/J)+' MPa']));
+ R.push(['θ/L = T/(G J)',`${g(Tm)}/(${g(E)}×${g(J)})`,g(Tm/(E*J)*1e3)+' rad/m = '+g(Tm/(E*J)*1e3*DG)+'°/m'],['τmax (الجزء الأسمك)','',g(Tm*Math.max(...L.map(x=>x[1]))/J)+' MPa']);return R}
+function cls(v){const {A,t}=v,R=[];if(!A||!t)return[['خطأ','','NaN']];
+ const Tm=v.T!=null?v.T*1e3:null,Ta=v.ta!=null?2*A*t*v.ta:null;
+ if(Tm!=null)R.push(['q = T/(2A)',`${g(Tm)}/(2×${g(A)})`,g(Tm/(2*A))+' N/mm'],['τmax = T/(2 A t min)',`${g(Tm)}/(2×${g(A)}×${g(t)})`,g(Tm/(2*A*t))+' MPa']);
+ if(Ta!=null)R.push(['T مسموح = 2 A t τ',`2×${g(A)}×${g(t)}×${g(v.ta)}`,g(Ta/1e3)+' N·m']);
+ return R.length?R:[['خطأ','','NaN']]}
+const TY={
+rect:{c:rect,f:[['T','العزم T (N·m) اختياري',450],['d','الضلع الأطول d (mm)',38],['b','الضلع الأقصر b (mm)',25],['G','G (GPa)',80],['k1','k1 (اختياري)',''],['k2','k2 (اختياري)',''],['ta','τ مسموح (MPa) اختياري','']]},
+opn:{c:opn,f:[['T','العزم T (N·m)',200],['G','G (GPa)',80],['s1','طول s1 (mm)',150],['t1','سمك t1 (mm)',15],['s2','طول s2 (mm)',150],['t2','سمك t2 (mm)',15],['s3','طول s3 (mm)',400],['t3','سمك t3 (mm)',15]]},
+cls:{c:cls,f:[['T','العزم T (N·m) اختياري',50],['A','المساحة داخل الـ centreline A (mm²)',2100],['t','أقل سمك t (mm)',10],['ta','τ مسموح (MPa) اختياري','']]}};
+function l3fields(){$('l3f').innerHTML=TY[$('l3type').value].f.map(x=>`<div class="row"><label style="flex:0 0 150px">${x[1]}</label><input id="l3_${x[0]}" type="number" step="any" value="${x[2]}"></div>`).join('');l3()}
+function l3(){const k=$('l3type').value,v={};TY[k].f.forEach(x=>{const e=$('l3_'+x[0]);v[x[0]]=!e||e.value===''?null:+e.value});
+ let R=[];try{R=TY[k].c(v)}catch(e){R=[['خطأ','','NaN']]}
+ const bad=R.some(r=>/NaN|Infinity/.test(r[2]));
+ $('l3tb').innerHTML=bad?'<tr><td class="err">أدخل كل القيم المطلوبة بشكل صحيح</td></tr>':'<tr><th>القانون</th><th>التعويض</th><th>الناتج</th></tr>'+R.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td class="r">${r[2]}</td></tr>`).join('')}
+$('l3type').onchange=l3fields;$('l3f').addEventListener('input',l3);
+addEventListener('hashchange',route);
+$('theme').onclick=()=>{const r=document.documentElement,d=r.dataset.theme==='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme:dark)').matches);r.dataset.theme=d?'light':'dark'};
+route();
+</script>
+</body>
+</html>
